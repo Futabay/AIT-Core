@@ -367,6 +367,10 @@ class Validator(object):
     def schema_val(self, messages=None):
         "Perform validation with processed YAML and Schema"
         self._ymlproc = YAMLProcessor(self._ymlfile)
+
+        print(self._ymlproc)
+
+        
         self._schemaproc = SchemaProcessor(self._schemafile)
         valid = True
 
