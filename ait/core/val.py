@@ -62,6 +62,12 @@ class YAMLProcessor (object):
         if ymlfile is not None:
             self.ymlfile = ymlfile
 
+        with open(self.ymlfile, 'rb') as stream:
+            self.data = yaml.load_all(stream, Loader=yaml.Loader)
+
+        print(self.data)
+        
+
         try:
             # If yaml should be 'cleaned' of document references
             if self._clean:
@@ -112,6 +118,7 @@ class YAMLProcessor (object):
                 # Append one more document to docline for the end
                 self.doclines.append(linenum+1)
 
+            print(output)
             return output
 
         except IOError as e:
@@ -365,7 +372,7 @@ class Validator(object):
         return valid
 
     def schema_val(self, messages=None):
-        "Perform validation with processed YAML and Schema"
+        """Perform validation with processed YAML and Schema"""
         self._ymlproc = YAMLProcessor(self._ymlfile)
 
         print(self._ymlproc.data)
@@ -732,3 +739,13 @@ class ByteOrderRule(ValidationRule):
 
         self.prevstop = defn.slice().stop
 
+
+def YAMLCtor_include(loader, node):
+    # Get the path out of the yaml file
+    name = os.path.join(os.path.dirname(loader.name), node.value)
+    data = None
+    with open(name,'r') as f:
+        data = yaml.load(f)
+    return data
+
+yaml.add_constructor('!include'   , YAMLCtor_include)
