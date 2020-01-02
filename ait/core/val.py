@@ -368,9 +368,10 @@ class Validator(object):
         "Perform validation with processed YAML and Schema"
         self._ymlproc = YAMLProcessor(self._ymlfile)
 
-        print(self._ymlproc)
+        for data in self._ymlproc:
+            print(data)
 
-        
+
         self._schemaproc = SchemaProcessor(self._schemafile)
         valid = True
 
