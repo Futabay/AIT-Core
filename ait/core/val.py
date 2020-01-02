@@ -376,7 +376,7 @@ class Validator(object):
         if self._ymlproc.loaded and self._schemaproc.loaded:
             # Load all of the yaml documents. Could be more than one in the same YAML file.
             for docnum, data in enumerate(yaml.load_all(self._ymlproc.data, Loader=yaml.Loader)):
-
+                print(docnum, data)
                 # Since YAML allows integer keys but JSON does not, we need to first
                 # dump the data as a JSON string to encode all of the potential integers
                 # as strings, and then read it back out into the YAML format. Kind of
