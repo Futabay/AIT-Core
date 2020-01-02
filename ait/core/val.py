@@ -65,6 +65,7 @@ class YAMLProcessor (object):
         with open(self.ymlfile, 'rb') as stream:
             self.data = yaml.load_all(stream, Loader=yaml.Loader)
 
+        print("self.data")
         print(self.data)
         
 
@@ -745,7 +746,7 @@ def YAMLCtor_include(loader, node):
     name = os.path.join(os.path.dirname(loader.name), node.value)
     data = None
     with open(name,'r') as f:
-        data = yaml.load(f)
+        data = yaml.load(f, Loader=yaml.Loader)
     return data
 
 yaml.add_constructor('!include'   , YAMLCtor_include)
