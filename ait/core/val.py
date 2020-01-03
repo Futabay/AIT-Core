@@ -64,11 +64,9 @@ class YAMLProcessor (object):
 
         with open(self.ymlfile, 'rb') as stream:
             self.data = yaml.load(stream, Loader=yaml.Loader)
-
         print("self.data")
         print(self.data)
 
-        print(yaml.dump(self.data))
 
         try:
             # If yaml should be 'cleaned' of document references
@@ -741,8 +739,8 @@ class ByteOrderRule(ValidationRule):
 
         self.prevstop = defn.slice().stop
 
-
-def YAMLCt_include(loader, node):
+"""
+def YAMLCtor_include(loader, node):
     # Get the path out of the yaml file
     name = os.path.join(os.path.dirname(loader.name), node.value)
     data = None
@@ -750,11 +748,12 @@ def YAMLCt_include(loader, node):
         data = yaml.load(f, Loader=yaml.Loader)
     return data
 
-"""
+
 def include(loader, node): 
     "Include another YAML file." 
 filename = loader.construct_scalar(node) 
 data = yaml.load(open(filename))
+"""
 
 class Loader(yaml.SafeLoader):
     def __init__(self, stream):
@@ -765,6 +764,9 @@ class Loader(yaml.SafeLoader):
         filename = os.path.join(self._root, self.construct_scalar(node))
         with open(filename, 'r') as f:
             return yaml.load(f, Loader)
-"""
 
-yaml.add_constructor('!include'   , YAMLCt_include)
+
+#yaml.add_constructor('!include', YAMLCtor_include)
+Loader.add_constructor('!include', Loader.include)
+
+#util.__init_extensions__(__name__, globals())
