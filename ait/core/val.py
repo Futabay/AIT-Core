@@ -742,7 +742,7 @@ class ByteOrderRule(ValidationRule):
 
         self.prevstop = defn.slice().stop
 
-
+"""
 def YAMLCtor_include(loader, node):
     # Get the path out of the yaml file
     name = os.path.join(os.path.dirname(loader.name), node.value)
@@ -750,7 +750,7 @@ def YAMLCtor_include(loader, node):
     with open(name,'r') as f:
         data = yaml.load(f, Loader=yaml.Loader)
     return data
-
+"""
 """
 def include(loader, node): 
     "Include another YAML file." 
@@ -767,7 +767,7 @@ class Loader(yaml.SafeLoader):
         with open(filename, 'r') as f:
             return yaml.load(f, Loader)
 """
-
+"""
 yaml.add_constructor('!include', YAMLCtor_include)
+"""
 
-util.__init_extensions__(__name__, globals())
