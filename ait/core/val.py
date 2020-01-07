@@ -35,6 +35,9 @@ import collections
 from ait.core import cmd, dtype, log, tlm, util
 
 
+#from typing import Any, IO
+
+
 class YAMLProcessor (object):
 
     __slots__ = ["ymlfile", "data", "loaded", "doclines", "_clean"]
@@ -742,7 +745,7 @@ class ByteOrderRule(ValidationRule):
 
         self.prevstop = defn.slice().stop
 
-"""
+
 def YAMLCtor_include(loader, node):
     # Get the path out of the yaml file
     name = os.path.join(os.path.dirname(loader.name), node.value)
@@ -750,15 +753,17 @@ def YAMLCtor_include(loader, node):
     with open(name,'r') as f:
         data = yaml.load(f, Loader=yaml.Loader)
     return data
-"""
+
 """
 def include(loader, node): 
     "Include another YAML file." 
 filename = loader.construct_scalar(node) 
 data = yaml.load(open(filename))
-
-class Loader(yaml.SafeLoader):
-    def __init__(self, stream):
+"""
+"""
+class Loader(yaml.Loader):
+    def __init__(self, stream: IO) -> None:
+        print(os.path.split(stream.name)[0])
         self._root = os.path.split(stream.name)[0]
         super(Loader, self).__init__(stream)
 
@@ -768,6 +773,19 @@ class Loader(yaml.SafeLoader):
             return yaml.load(f, Loader)
 """
 """
-yaml.add_constructor('!include', YAMLCtor_include)
+def construct_include(loader: Loader, node: yaml.Node) -> Any:
+    "Include file referenced at node."
+    filename = os.path.abspath(os.path.join(loader._root, loader.construct_scalar(node)))
+    extension = os.path.splitext(filename)[1].lstrip('.')
+
+    with open(filename, 'r') as f:
+        if extension in ('yaml', 'yml'):
+            return yaml.load(f, Loader)
+        elif extension in ('json', ):
+            return json.load(f)
+        else:
+            return ''.join(f.readlines())
 """
 
+yaml.add_constructor('!include', YAMLCtor_include)
+#yaml.add_constructor('!include', construct_include, Loader)
