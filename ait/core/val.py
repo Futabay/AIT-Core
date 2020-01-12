@@ -35,9 +35,6 @@ import collections
 from ait.core import cmd, dtype, log, tlm, util
 
 
-#from typing import Any, IO
-
-
 class YAMLProcessor (object):
 
     __slots__ = ["ymlfile", "data", "loaded", "doclines", "_clean"]
@@ -71,7 +68,7 @@ class YAMLProcessor (object):
         print("self.data")
         print(self.data)
 
-        self.ymlfile = yaml.dump_all(self.data)
+        #self.ymlfile = yaml.dump_all(self.data)
 
 
         try:
@@ -125,6 +122,7 @@ class YAMLProcessor (object):
                 self.doclines.append(linenum+1)
 
             print(output)
+            
             return output
 
         except IOError as e:
@@ -381,7 +379,7 @@ class Validator(object):
         """Perform validation with processed YAML and Schema"""
         self._ymlproc = YAMLProcessor(self._ymlfile)
 
-        print(self._ymlproc.data)
+        #print(self._ymlproc.data)
 
 
         self._schemaproc = SchemaProcessor(self._schemafile)
